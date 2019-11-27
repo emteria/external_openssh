@@ -291,9 +291,6 @@ LOCAL_C_INCLUDES := \
     external/openssh/openbsd-compat
 
 LOCAL_SHARED_LIBRARIES += libssh libssl libcrypto libdl libz libcutils
-ifeq ($(shell test $(PLATFORM_SDK_VERSION) -ge 27; echo $$?),0)
-LOCAL_SHARED_LIBRARIES += libc.bootstrap
-endif
 
 include $(BUILD_EXECUTABLE)
 
