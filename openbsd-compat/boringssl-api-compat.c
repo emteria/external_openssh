@@ -545,12 +545,4 @@ EVP_MD_CTX_free(EVP_MD_CTX *ctx)
 }
 #endif /* HAVE_EVP_MD_CTX_FREE */
 
-#ifndef HAVE_EVP_PKEY_BASE_ID
-int
-EVP_PKEY_base_id(EVP_PKEY *pkey)
-{
-	return EVP_PKEY_type(pkey->type);
-}
-#endif /* HAVE_EVP_MD_CTX_FREE */
-
 #endif /* WITH_OPENSSL */
