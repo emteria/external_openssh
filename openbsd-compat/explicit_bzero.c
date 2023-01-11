@@ -43,6 +43,9 @@ static void (* volatile ssh_bzero)(void *, size_t) = wrapped_bzero;
  * Indirect bzero through a volatile pointer to hopefully avoid
  * dead-store optimisation eliminating the call.
  */
+#if defined(ANDROID)
+static void (* volatile ssh_bzero)(void *, size_t) = __bionic_bzero;
+#else
 static void (* volatile ssh_bzero)(void *, size_t) = bzero;
 #endif
 

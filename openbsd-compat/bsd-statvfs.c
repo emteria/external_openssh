@@ -24,8 +24,7 @@
 #endif
 
 #if defined(ANDROID)
-#include <sys/vfs.h>
-#include <string.h>
+#include <sys/param.h>
 #define MNAMELEN PATH_MAX
 #endif
 
@@ -35,6 +34,11 @@
 # define MNAMELEN 32
 #endif
 
+#ifdef HAVE_STRUCT_STATFS_F_FILES
+# define HAVE_STRUCT_STATFS
+#endif
+
+#ifdef HAVE_STRUCT_STATFS
 static void
 copy_statfs_to_statvfs(struct statvfs *to, struct statfs *from)
 {
@@ -54,11 +58,12 @@ copy_statfs_to_statvfs(struct statvfs *to, struct statfs *from)
 #endif
 	to->f_namemax = MNAMELEN;
 }
+#endif
 
 # ifndef HAVE_STATVFS
 int statvfs(const char *path, struct statvfs *buf)
 {
-#  ifdef HAVE_STATFS
+#  if defined(HAVE_STATFS) && defined(HAVE_STRUCT_STATFS)
 	struct statfs fs;
 
 	memset(&fs, 0, sizeof(fs));
@@ -76,7 +81,7 @@ int statvfs(const char *path, struct statvfs *buf)
 # ifndef HAVE_FSTATVFS
 int fstatvfs(int fd, struct statvfs *buf)
 {
-#  ifdef HAVE_FSTATFS
+#  if defined(HAVE_FSTATFS) && defined(HAVE_STRUCT_STATFS)
 	struct statfs fs;
 
 	memset(&fs, 0, sizeof(fs));
