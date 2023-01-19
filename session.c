@@ -1233,7 +1233,14 @@ do_rc_files(struct ssh *ssh, Session *s, const char *shell)
 		if (debug_flag)
 			fprintf(stderr, "Running %s %s\n", _PATH_BSHELL,
 			    _PATH_SSH_SYSTEM_RC);
+#if defined(ANDROID)
+		/* _PATH_BSHELL is not a compile-time constant on Android. */
+		snprintf(cmd, sizeof cmd, "%s %s", _PATH_BSHELL,
+			 _PATH_SSH_SYSTEM_RC);
+		f = popen(cmd, "w");
+#else
 		f = popen(_PATH_BSHELL " " _PATH_SSH_SYSTEM_RC, "w");
+#endif
 		if (f) {
 			if (do_xauth)
 				fprintf(f, "%s %s\n", s->auth_proto,
@@ -1382,7 +1389,9 @@ do_setusercontext(struct passwd *pw)
 			perror("initgroups");
 			exit(1);
 		}
+#if !defined(ANDROID)
 		endgrent();
+#endif
 #endif
 
 		platform_setusercontext_post_groups(pw);
@@ -1488,11 +1497,13 @@ child_close_fds(struct ssh *ssh)
 	/* XXX better use close-on-exec? -markus */
 	channel_close_all(ssh);
 
+#if !defined(ANDROID)
 	/*
 	 * Close any extra file descriptors.  Note that there may still be
 	 * descriptors left by system functions.  They will be closed later.
 	 */
 	endpwent();
+#endif
 
 	/* Stop directing logs to a high-numbered fd before we close it */
 	log_redirect_stderr_to(NULL);
@@ -2713,4 +2724,3 @@ session_get_remote_name_or_ip(struct ssh *ssh, u_int utmp_size, int use_dns)
 		remote = ssh_remote_ipaddr(ssh);
 	return remote;
 }
-
