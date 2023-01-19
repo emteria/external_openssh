@@ -239,4 +239,3 @@ openpty(int *amaster, int *aslave, char *name, struct termios *termp,
 }
 
 #endif /* !defined(HAVE_OPENPTY) */
-

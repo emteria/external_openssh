@@ -2131,7 +2131,28 @@
 
 #define _PATH_SSH_PROGRAM "/system/bin/ssh"
 
-/* Android doesn't actually have these, but we don't need the substitutes either (and they fail to build) */
+/* Utilize some of the LibreSSL compatibility layer */
+#define HAVE_DH_GET0_KEY 1
+#define HAVE_DH_GET0_PQG 1
+#define HAVE_DH_SET0_KEY 1
+#define HAVE_DH_SET0_PQG 1
+#define HAVE_DH_SET_LENGTH 1
+#define HAVE_DSA_GET0_KEY 1
+#define HAVE_DSA_GET0_PQG 1
+#define HAVE_DSA_SET0_KEY 1
+#define HAVE_DSA_SET0_PQG 1
+#undef HAVE_DSA_SIG_GET0
+#undef HAVE_DSA_SIG_SET0
+#define HAVE_ECDSA_SIG_GET0 1
+#define HAVE_ECDSA_SIG_SET0 1
+#undef HAVE_EVP_CIPHER_CTX_GET_IV
+#undef HAVE_EVP_CIPHER_CTX_SET_IV
+#define HAVE_EVP_MD_CTX_FREE 1
+#define HAVE_EVP_MD_CTX_NEW 1
+#define HAVE_EVP_PKEY_GET0_RSA 1
+#define HAVE_RSA_GET0_CRT_PARAMS 1
+#define HAVE_RSA_GET0_FACTORS 1
+#define HAVE_RSA_GET0_KEY 1
 #define HAVE_RSA_METH_DUP 1
 #define HAVE_RSA_METH_FREE 1
 #define HAVE_RSA_METH_GET_FINISH 1
