@@ -1,5 +1,5 @@
 on post-fs-data
-    mkdir /data/ssh 0700 system system
+    mkdir /data/ssh 0700 system system encryption=None
     mkdir /data/ssh/empty 0600 root root
 
 on property:sys.boot_completed=1 && property:persist.sys.sshd.enabled=1
